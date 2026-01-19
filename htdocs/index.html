@@ -1,10 +1,40 @@
-<html>
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-    <title>Hello World</title>
+    <meta charset="UTF-8">
+    <title>TCP Transport Lab</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Hello World!</h1>
-    <p>Welcome to the index.html web page..</p>
-    <p>Here's a link to <a href="ipsum.html">Ipsum</a></p>
+    <div class="bg"></div>
+
+    <div class="container">
+        <h1>Camada de Transporte</h1>
+        <p>Monitoramento de Transferência de Dados via Socket TCP</p>
+
+        <div class="grid">
+            <div class="card">
+                <h3>1. Handshake e Request Rápido</h3>
+                <p>Solicita um arquivo de texto pequeno (1KB).</p>
+                <button onclick="fetchData('pequeno.txt', 'log1')">Testar Ping/Texto</button>
+                <div id="log1" class="status"></div>
+            </div>
+
+            <div class="card">
+                <h3>2. Transferência de Mídia</h3>
+                <p>Solicita uma imagem (Jpeg).<br>Contém fragmentação.</p>
+                <button onclick="fetchData('medio.jpg', 'image-container')">Carregar Imagem</button>
+                <div id="image-container" class="statusbox"></div>
+            </div>
+
+            <div class="card">
+                <h3>3. Fluxo Contínuo TCP</h3>
+                <p>Solicita um arquivo grande.<br>Contém janelas deslizantes.</p>
+                <button onclick="fetchData('grande.txt', 'log3')">Download Pesado</button>
+                <div id="log3" class="status"></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
