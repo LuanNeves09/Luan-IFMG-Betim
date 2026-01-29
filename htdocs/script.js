@@ -8,7 +8,7 @@ function fetchData(file, elementId) {
     if (file.endsWith('.jpg')) {
         const img = new Image();
         img.onload = () => { display.innerHTML = ""; display.appendChild(img); };
-        img.onerror = () => { display.innerHTML = "Erro ao carregar (Verifique o servidor)"; };
+        img.onerror = () => { display.innerHTML = "❌ Erro ao carregar (Verifique o servidor)"; };
         img.src = url;
     } else {
         fetch(url)
@@ -17,10 +17,10 @@ function fetchData(file, elementId) {
                 return response.text();
             })
             .then(text => {
-                display.innerHTML = "Recebido! Tamanho: " + text.length + " bytes";
+                display.innerHTML = "✅ Recebido! Tamanho: " + text.length + " bytes";
             })
             .catch(err => {
-                display.innerHTML = "Falha na conexão: " + err.message;
+                display.innerHTML = "❌ Falha na conexão: " + err.message;
             });
     }
 }
