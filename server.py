@@ -1,6 +1,6 @@
 """
  Implements a simple HTTP/1.0 Server
- Modificado para suportar arquivos binários (imagens) e MIME Types
+ Modified to support binary files (images) and MIME Types
 """
 
 import socket
@@ -9,7 +9,7 @@ import socket
 # Define socket host and port
 SERVER_HOST = '0.0.0.0'
 SERVER_PORT = 8000
-BASE_DIR = 'htdocs' # Pasta onde ficam os arquivos do site
+BASE_DIR = 'htdocs'
 
 # Create socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -26,36 +26,36 @@ while True:
     try:
         request = client_connection.recv(1024).decode()
     except:
-        continue # Ignora conexões vazias ou erros de decodificação
+        continue # Ignore null conections
 
     if not request:
         continue
 
     # Parse HTTP headers
     headers = request.split('\n')
-    # Pega o nome do arquivo (ex: /index.html)
+    # Get file name (e.g.: /index.html)
     filename = headers[0].split()[1]
     
-    # Remove parametros de URL se houver (ex: ?t=123)
+    # Remove URL params, if have (e.g.: ?t=123)
     if '?' in filename:
         filename = filename.split('?')[0]
 
-    # Roteamento para a raiz
+    # Routing to root
     if filename == '/':
         filename = '/index.html'
 
-    # Caminho completo do arquivo
+    # Full path to file
     filepath = BASE_DIR + filename
 
     try:
-        # Abrir como 'rb' (Leitura Binária)
-        # Necessario para imagens nao corromperem
+        # Open like 'rb' (Read Binary)
+        # Need to images don't get corrupted
         fin = open(filepath, 'rb')
         content = fin.read()
         fin.close()
 
-        # Definir o Content-Type correto
-        # Isso ensina o navegador como exibir o arquivo
+       # Set the correct Content-Type
+       # This teaches the browser how to display the file
         response_header = 'HTTP/1.0 200 OK\n'
         
         if filename.endswith('.jpg') or filename.endswith('.jpeg'):
@@ -69,20 +69,20 @@ while True:
         else:
             response_header += 'Content-Type: text/plain\n'
 
-        response_header += '\n' # Linha em branco obrigatória
+        response_header += '\n' # mandatory blank line between headers and content
 
-        # Enviar Bytes
-        # Codifico o cabeçalho para bytes e somamos com o conteúdo (que já é bytes)
+        # Send Bytes
+        # I encode the header into bytes and add it to the content (which is already in bytes)
         client_connection.sendall(response_header.encode() + content)
         print(f"✅ Enviado: {filename}")
 
     except FileNotFoundError:
-        # Tratamento de erro 404
+        # Handling 404 Errors
         response = 'HTTP/1.0 404 NOT FOUND\n\n<h1>File Not Found</h1>'
         client_connection.sendall(response.encode())
         print(f"❌ Nao encontrado: {filename}")
 
-    # Fecha conexão
+    # FClose client connection
     client_connection.close()
 
 # Close socket

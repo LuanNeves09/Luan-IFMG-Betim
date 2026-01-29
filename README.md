@@ -1,56 +1,43 @@
-# Redes-Transporte-TP
+# Laboratório de Redes: Servidor HTTP & Camada de Transporte
 
+> **Disciplina:** Redes de Computadores  
+> **Tema:** Protocolo TCP/IP e HTTP Sockets  
 
-# Trabalho Prático: Explorando a Camada de Transporte do Modelo TCP/IP
+## Sobre o Projeto
+Este projeto consiste na implementação e modificação de um **Servidor Web (HTTP) utilizando Sockets em Python**. O objetivo principal é analisar o comportamento da Camada de Transporte (TCP) através do monitoramento de pacotes no **Wireshark**.
 
-## Objetivo
-Neste trabalho, os alunos irão explorar a camada de transporte do modelo TCP/IP, utilizando e modificando um servidor Python disponível no repositório GitLab: [Acessar Repositório](https://gitlab.betim.ifmg.edu.br/virgil.almeida/redes-transporte-tp). O objetivo é aprofundar o entendimento sobre o funcionamento do protocolo TCP e do HTTP, analisar conexões e pacotes utilizando o Wireshark, e implementar funcionalidades adicionais para o servidor, garantindo compatibilidade com um navegador (browser) como cliente.
+Para tornar a análise visual e interativa, foi desenvolvido um **Dashboard Front-End** que permite simular diferentes cenários de tráfego de rede (transferência de arquivos pequenos, imagens e grandes volumes de dados).
 
-## Referências
-- [RFC 7230 - Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing](https://datatracker.ietf.org/doc/html/rfc7230)  
-- [Introdução ao Protocolo HTTP - MDN Web Docs](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Overview)  
-- [Wireshark - HTTP Traffic Analysis](https://wiki.wireshark.org/HTTP)  
+---
 
-## Atividades
+## Funcionalidades Implementadas
 
-1. **Preparação do Ambiente**
-   - Clone o repositório fornecido e configure o ambiente de desenvolvimento.
-   - Familiarize-se com o código do servidor Python para entender como ele responde às solicitações de um cliente HTTP.
+### Backend (Python)
+- **Sockets TCP/IP:** Implementação pura sem frameworks web (como Flask/Django).
+- **Suporte a Arquivos Binários:** Modificação do código original para permitir leitura de imagens (`.jpg`, `.png`) utilizando modo `rb`.
+- **MIME Types Dinâmicos:** Identificação automática do tipo de arquivo para envio do cabeçalho `Content-Type` correto.
+- **Tratamento de Erros:** Respostas HTTP 404 personalizadas.
 
-2. **Análise com o Wireshark**
-   - Utilize o Wireshark para monitorar o tráfego de rede gerado pelo servidor.
-   - Acesse o servidor utilizando um navegador como cliente (por exemplo, Chrome ou Firefox).
-   - Identifique:
-     - As conexões TCP abertas.
-     - As sequências de pacotes trocadas durante o envio de arquivos de tamanhos variados.
+### Frontend (Dashboard)
+- **Interface Interativa:** Painel para disparo de requisições.
+- **Cache Busting:** Script JS para forçar novas conexões TCP a cada clique (evitando cache do navegador).
+- **Cenários de Teste:**
+  1.  **Ping Rápido:** Arquivo de texto minúsculo (Handshake + Push simples).
+  2.  **Mídia:** Carregamento de imagem (Teste de integridade de dados binários).
+  3.  **Fluxo Intenso:** Download de arquivo grande (>5MB) para visualização de *Janelas Deslizantes* e *Segmentação TCP*.
 
-3. **Implementação de Funcionalidades**
-   - Modifique o servidor para:
-     - Atender solicitações HTTP de navegadores, fornecendo arquivos de diferentes tamanhos.
-     - Garantir que o envio e recebimento de dados sejam compatíveis com as expectativas de um cliente HTTP.
-   - Certifique-se de que os dados transferidos sejam corretamente exibidos no navegador.
+---
 
-4. **Avaliação de Segurança**
-   - Analise as vulnerabilidades potenciais na implementação do servidor HTTP.
+## Estrutura do Projeto
 
-## Entrega
-Cada grupo deverá entregar:
-- Relatório contendo:
-  - Capturas de tela do Wireshark, destacando as conexões TCP abertas e as sequências de pacotes observadas durante solicitações HTTP no navegador.
-  - Explicação detalhada das alterações implementadas no código do servidor.
-  - Discussão sobre as vulnerabilidades identificadas e as melhorias sugeridas.
-- Código modificado, com comentários explicativos, em um repositório próprio ou na forma de arquivo compactado.
-
-## Prazo de Entrega
-Data apresentada no AVA
-
-## Critérios de Avaliação
-- **Funcionamento do servidor modificado:** (50%)  
-- **Análise detalhada no Wireshark:** (20%)  
-- **Qualidade do relatório:** (20%)  
-- **Discussão sobre segurança e melhorias propostas:** (10%)    
-
-
-## Projeto base
-
-https://www.codementor.io/@joaojonesventura/building-a-basic-http-server-from-scratch-in-python-1cedkg0842
+```text
+├── server.py           # O código fonte do Servidor (Socket)
+├── README.md           # Documentação
+└── htdocs/             # Arquivos públicos (Site)
+    ├── index.html      # O Dashboard
+    ├── style.css       # Estilos visuais
+    ├── script.js       # Lógica de requisição
+    ├── pequeno.txt     # Payload de teste leve
+    ├── medio.jpg       # Payload de teste binário
+    ├── favicon.ico     # Ícone exibido na aba do navegador 
+    └── grande.txt      # Payload de teste pesado (Gerado automaticamente)
